@@ -15,6 +15,7 @@ export default function TodosPage() {
 
   const [todos, setTodos] = useState<Todo[] | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -34,10 +35,15 @@ export default function TodosPage() {
   }, []);
 
   const getTodos = async () => {
+    setIsLoading(true);
+
     const { data, error } = await supabase
       .from('todos')
       .select('*')
       .order('is_complete', { ascending: true });
+
+    setIsLoading(false);
+
     if (error) {
       console.error('Error getting todos:', error);
     } else {
@@ -52,8 +58,13 @@ export default function TodosPage() {
         <div>
           <h1 className="text-2xl font-bold mb-4">Todos</h1>
         </div>
-        <InputTodoForm user={user} setTodos={setTodos} getTodos={getTodos} />
-        <TodosContainer todos={todos} setTodos={setTodos} getTodos={getTodos} />
+        <InputTodoForm user={user} getTodos={getTodos} />
+        <TodosContainer
+          todos={todos}
+          setTodos={setTodos}
+          getTodos={getTodos}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

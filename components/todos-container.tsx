@@ -11,10 +11,12 @@ type Todo = Database['public']['Tables']['todos']['Row'];
 const TodosContainer = ({
   todos,
   getTodos,
+  isLoading,
 }: {
   todos: Todo[] | null;
   setTodos: React.Dispatch<React.SetStateAction<any>>;
   getTodos: () => void;
+  isLoading: boolean;
 }) => {
   const handleDeleteTodo = async (todoId: number) => {
     const supabase = createClient();
@@ -29,6 +31,10 @@ const TodosContainer = ({
       getTodos();
     }
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
