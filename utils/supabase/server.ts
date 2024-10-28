@@ -40,9 +40,7 @@ export async function handleAddTodoServer(todoText: string, userId: string) {
     return error;
   } else {
     console.log('Todo added:', data);
-    const { data: updatedTodos } = await supabase
-      .from('todos')
-      .select('*');
+    const { data: updatedTodos } = await supabase.from('todos').select('*');
     return updatedTodos;
   }
 }
@@ -57,21 +55,3 @@ export async function handleGetTodosServer() {
   }
   return data;
 }
-
-// export async function handleDeleteTodo(todoId: string) {
-//   const supabase: SupabaseClient<Database> = await createClient();
-//   const { data, error } = await supabase
-//     .from('todos')
-//     .delete()
-//     .eq('id', todoId);
-//   if (error) {
-//     console.error('Error deleting:', error);
-//     return error;
-//   } else {
-//     console.log('deleted:', data);
-//     const { data: updatedTodos, error } = await supabase
-//       .from('todos')
-//       .select('*');
-//     return updatedTodos;
-//   }
-// }
