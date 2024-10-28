@@ -34,7 +34,10 @@ export default function TodosPage() {
   }, []);
 
   const getTodos = async () => {
-    const { data, error } = await supabase.from('todos').select('*');
+    const { data, error } = await supabase
+      .from('todos')
+      .select('*')
+      .order('is_complete', { ascending: true });
     if (error) {
       console.error('Error getting todos:', error);
     } else {
@@ -45,12 +48,12 @@ export default function TodosPage() {
 
   return (
     <div className="container mx-auto p-4 flex justify-center">
-      <div className="w-1/2">
+      <div className="md:w-1/2 w-full">
         <div>
           <h1 className="text-2xl font-bold mb-4">Todos</h1>
         </div>
-        <InputTodoForm user={user} setTodos={setTodos} />
-        <TodosContainer todos={todos} setTodos={setTodos} />
+        <InputTodoForm user={user} setTodos={setTodos} getTodos={getTodos} />
+        <TodosContainer todos={todos} setTodos={setTodos} getTodos={getTodos} />
       </div>
     </div>
   );
